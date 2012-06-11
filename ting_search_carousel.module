@@ -173,15 +173,14 @@ function ting_search_carousel_do_request($full = FALSE) {
             }
 
             // Saves and returns new image file object
-            $file = _ting_covers_pages_fetch_image('public://ting_search_carousel/' . md5($object->localId) . '.jpg', $source_url);
+            $file = _ting_covers_pages_fetch_image($path, $source_url);
           }
 
           $item = new stdClass();
           $item->id = $object->id;
           $item->creator = isset($object->record['dc:creator']['oss:aut'][0]) ? $object->record['dc:creator']['oss:aut'][0] : '';
           $item->title = isset($object->record['dc:title'][''][0]) ? $object->record['dc:title'][''][0] : '';
-          $item->image = image_style_url('ting_search_carousel', isset($file->uri) ? $file->uri : $path);
-
+          $item->image = url(file_stream_wrapper_get_instance_by_uri($path)->getDirectoryPath() . '/' . file_uri_target($path));
           $search_items[$j][] = $item;
           break;
         }
