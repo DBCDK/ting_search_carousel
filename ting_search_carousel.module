@@ -180,7 +180,9 @@ function ting_search_carousel_do_request($full = FALSE) {
           $item->id = $object->id;
           $item->creator = isset($object->record['dc:creator']['oss:aut'][0]) ? $object->record['dc:creator']['oss:aut'][0] : '';
           $item->title = isset($object->record['dc:title'][''][0]) ? $object->record['dc:title'][''][0] : '';
-          $item->image = url(file_stream_wrapper_get_instance_by_uri($path)->getDirectoryPath() . '/' . file_uri_target($path));
+          #$item->image = url(file_stream_wrapper_get_instance_by_uri($path)->getDirectoryPath() . '/' . file_uri_target($path));
+          $url = base_path().file_stream_wrapper_get_instance_by_uri($path)->getDirectoryPath() . '/' . file_uri_target($path);
+          $item->image = $url;
           $search_items[$j][] = $item;
           break;
         }
