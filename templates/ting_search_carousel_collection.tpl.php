@@ -3,6 +3,7 @@
  * @file
  *
  */
+// dpm($variables);
 ?>
 <li class="rs-carousel-item">
   <a href="ting/collection/<?php echo $collection->id; ?>" class="rs-carousel-item-image"><img src="<?php echo $collection->image; ?>" alt=""/></a>

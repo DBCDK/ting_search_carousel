@@ -252,3 +252,8 @@
     top: 25%;
   }
 }
+/* Admin
+   ========================================================================== */
+#ting-search-carousel-admin-sort .search-carousel-query {
+  padding-left: 24px;
+}
