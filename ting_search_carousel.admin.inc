@@ -67,22 +67,27 @@ function ting_search_carousel_settings_admin_form($form, &$form_state) {
 function ting_search_carousel_admin_form($form, &$form_state) {
   $searches_num = !empty($form_state['values']['num_searches']) ? $form_state['values']['num_searches'] : 0;
   $clicked_btn = '';
-  $remove_btn = '';
+  $query = array();
   $hidden = variable_get('ting_carousel_search_queries_hidden', array());
 
   if (isset($form_state['clicked_button'])) {
-    $clicked_btn = $form_state['clicked_button']['#name'];
-
-    // Get a clicked 'remove' button
-    foreach ($form_state['buttons'] as $k => $v) {
-      if ($v['#name'] == $clicked_btn) {
-        if (preg_match('/edit-remove/', $v['#id'])) {
-          $remove_btn = $k;
-          $hidden[] = $remove_btn;
-          variable_set('ting_carousel_search_queries_hidden', $hidden);
-          break;
+    // clicked button: redirect to search result, or delete search.
+    $id = explode('_', $form_state['clicked_button']['#name']);
+    switch ( $id[0] ) {
+      case 'test':
+        $id = $id[1];
+        $q = $form_state['input']['query'][$id];
+        $search_info = search_get_default_module_info();
+        if ( !empty($search_info['path']) && in_array($search_info['module'], variable_get('search_active_modules', array())) ) {
+          $form_state['redirect'] = FALSE;
+          $url = 'search/' . $search_info['path'] . '/' . trim($q);
+          drupal_goto($url, array('query' => $query));
         }
-      }
+        break;
+      case 'remove':
+        $hidden[] = $id[1];
+        variable_set('ting_carousel_search_queries_hidden', $hidden);
+        break;
     }
   }
 
@@ -288,6 +293,12 @@ function theme_ting_search_carousel_admin_form($variables) {
 function ting_search_carousel_query_form($item = array(), $index = 0) {
   $form = array();
 
+  $form['fields'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Search fields'),
+    '#title_display' => 'invisible',
+  );
+
   $form['sort[]'] = array(
     '#type' => 'weight',
     '#delta' => 5,
@@ -300,7 +311,7 @@ function ting_search_carousel_query_form($item = array(), $index = 0) {
     ),
   );
 
-  $form['title[]'] = array(
+  $form['fields']['title[]'] = array(
     '#type' => 'textfield',
     '#title' => t('Title'),
     '#description' => t('The title of the search is used for the tab in the carousel. Keep it short.'),
@@ -308,14 +319,14 @@ function ting_search_carousel_query_form($item = array(), $index = 0) {
     '#prefix' => '<div class="search-carousel-query">',
   );
 
-  $form['subtitle[]'] = array(
+  $form['fields']['subtitle[]'] = array(
     '#type' => 'textfield',
     '#title' => t('Description'),
     '#description' => t('The subtitle displayed next to the search results.'),
     '#default_value' => isset($item['subtitle']) ? $item['subtitle'] : '',
   );
 
-  $form['query[]'] = array(
+  $form['fields']['query[]'] = array(
     '#type' => 'textfield',
     '#title' => t('Query'),
     '#maxlength' => 2048,
@@ -323,10 +334,9 @@ function ting_search_carousel_query_form($item = array(), $index = 0) {
     '#default_value' => isset($item['query']) ? $item['query'] : '',
   );
 
-/*
   if ( isset($item['query']) ) {
-    $form['test[]'] = array(
-      '#type' => 'submit',
+    $form['fields']['test[]'] = array(
+      '#type' => 'button',
       '#value' => t('Test'),
       '#name' => 'test_' . $index,
       '#attributes' => array(
@@ -336,9 +346,8 @@ function ting_search_carousel_query_form($item = array(), $index = 0) {
       ),
     );
   }
-*/
 
-  $form['remove[]'] = array(
+  $form['fields']['remove[]'] = array(
     '#type' => 'button',
     '#value' => t('Remove'),
     '#name' => 'remove_' . $index,
@@ -371,7 +380,6 @@ function ting_search_carousel_search_submit($form, &$form_state) {
   $c = count($form_state['input']['title']);
   $searches = array();
   $search_items = array();
-  $query = array();
 
   for ($i = 0; $i < $c; $i++) {
     // Make an array for saving, ignoring queries w/o title.
@@ -383,19 +391,6 @@ function ting_search_carousel_search_submit($form, &$form_state) {
       );
     }
   }
-
-/*
-  // test button: redirect to search result
-  $id = explode('_', $form_state['clicked_button']['#name']);
-  $id = $id[1];
-  $q = $form_state['input']['query'][$id];
-  $search_info = search_get_default_module_info();
-  if ( !empty($search_info['path']) && in_array($search_info['module'], variable_get('search_active_modules', array())) ) {
-    $form_state['redirect'] = FALSE;
-    $url = 'search/' . $search_info['path'] . '/' . trim($q);
-    drupal_goto($url, array('query' => $query));
-  }
-*/
 
   /**
    * @TODO: Add clear cache button and detect changes in the query input fields

@@ -177,6 +177,7 @@ function _ting_search_carousel_get_content($index, $search = TRUE) {
   return '';
 }
 
+
 /**
  * Set database cache base on tab index in the front-end.
  *
@@ -194,6 +195,7 @@ function _ting_search_carousel_set_cache($index, $items) {
   $data[$index] = $items;
   cache_set('ting_search_carousel_result', $data, 'cache');
 }
+
 
 /**
  * Implements hook_image_default_styles().

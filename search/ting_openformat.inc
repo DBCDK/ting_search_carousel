@@ -20,6 +20,11 @@
 
       $params['query'] = $query['query'];
 
+      // $query['query_extra'] give other modules an option to extend the carousel query
+      if ( isset($query['query_extra']) && !empty($query['query_extra']) ) {
+        $params['query'] = $query['query_extra'];
+      }
+
       // results pr. page (opensearch::stepValue) ... in ting-client/lib/request/TingClientSearchRequest.php this is called numResults
       $params['numResults'] = $numResults;
 
