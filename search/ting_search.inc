@@ -4,10 +4,8 @@
   $queries = variable_get('ting_carousel_search_queries', array());
   $query = isset($queries[$index]) ? $queries[$index] : FALSE;
 
-  // $query['query_extra'] give other modules an option to extend the carousel query
-  if ( isset($query['query_extra']) && !empty($query['query_extra']) ) {
-    $params['query'] = $query['query_extra'];
-  }
+  // Give other modules an option to alter the carousel query
+  module_invoke_all('ting_search_carousel_query', $query);
 
   // Initialize cover items array.
   $cover_items = array();

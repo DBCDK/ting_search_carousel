@@ -126,11 +126,6 @@ function bibdk_search_carousel_search_submit($form, &$form_state) {
   $c = count($form_state['input']['title']);
   $searches = array();
   $search_items = array();
-  $bibdk_query_prefix = ' ' . t('BOOLEAN_AND') . ' ' .  variable_get('bibdk_search_carousel_week_search_code', 'dkcclterm.kk') . '=(';
-  $bibdk_query_suffix = ')';
-  $bibdk_dateformat = variable_get('bibdk_search_carousel_dateformat', 'bk\mYW');
-  $today = time();
-  $week = 7 * 24 * 60 * 60; // 7 days; 24 hours; 60 mins; 60secs
 
   for ($i = 0; $i < $c; $i++) {
     // Make an array for saving, ignoring queries w/o title.
@@ -143,15 +138,6 @@ function bibdk_search_carousel_search_submit($form, &$form_state) {
         'period' => $form_state['input']['period'][$i],
         'offset' => $form_state['input']['offset'][$i]
       );
-      $periods = array();
-      for ($n = 0; $n < $form_state['input']['period'][$i]; $n++) {
-        $offset = $form_state['input']['offset'][$i];
-        $weeks = $week * ( $n + $offset );
-        $periods[] = date($bibdk_dateformat, $today - $weeks);
-      }
-      if ( !empty($periods)  ) {
-        $searches[$i]['query_extra'] = $searches[$i]['query'] . $bibdk_query_prefix . implode(' ' . t('BOOLEAN_OR') . ' ', $periods) . $bibdk_query_suffix;
-      }
     }
   }
 
@@ -167,6 +153,32 @@ function bibdk_search_carousel_search_submit($form, &$form_state) {
   // Clear carousel search cache
   cache_clear_all('ting_search_carousel_result', 'cache');
 }
+
+
+/**
+ * Implements hook_ting_search_carousel_query().
+ */
+function bibdk_search_carousel_ting_search_carousel_query($query) {
+
+  $bibdk_query_prefix = ' ' . t('BOOLEAN_AND') . ' ' .  variable_get('bibdk_search_carousel_week_search_code', 'dkcclterm.kk') . '=(';
+  $bibdk_query_suffix = ')';
+  $bibdk_dateformat = variable_get('bibdk_search_carousel_dateformat', 'bk\mYW');
+  $today = time();
+  $week = 7 * 24 * 60 * 60; // 7 days; 24 hours; 60 mins; 60secs
+
+  $periods = array();
+  for ($n = 0; $n < $query['period']; $n++) {
+    $offset = $query['offset'];
+    $weeks = $week * ( $n + $offset );
+    $periods[] = date($bibdk_dateformat, $today - $weeks);
+  }
+  if ( !empty($periods)  ) {
+    $query['query'] = $query['query'] . $bibdk_query_prefix . implode(' ' . t('BOOLEAN_OR') . ' ', $periods) . $bibdk_query_suffix;
+  }
+
+  return $query;
+}
+
 
 
 /**

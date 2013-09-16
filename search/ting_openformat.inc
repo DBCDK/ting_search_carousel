@@ -4,6 +4,9 @@
   $queries = variable_get('ting_carousel_search_queries', array());
   $query = isset($queries[$index]) ? $queries[$index] : FALSE;
 
+  // Give other modules an option to alter the carousel query
+  $query = module_invoke_all('ting_search_carousel_query', $query);
+
   $cover_items = array();
 
   $max_covers  = variable_get('ting_search_carousel_covers_max', 20);
@@ -19,11 +22,6 @@
     if ( $query ) {
 
       $params['query'] = $query['query'];
-
-      // $query['query_extra'] give other modules an option to extend the carousel query
-      if ( isset($query['query_extra']) && !empty($query['query_extra']) ) {
-        $params['query'] = $query['query_extra'];
-      }
 
       // results pr. page (opensearch::stepValue) ... in ting-client/lib/request/TingClientSearchRequest.php this is called numResults
       $params['numResults'] = $numResults;
@@ -131,7 +129,7 @@
 
       // Build object with the information collected.
       $item = new stdClass();
-      $item->id = $objects[$local_id]['id'];
+      $item->pid = $objects[$local_id]['pid'];
       $item->title = $objects[$local_id]['title'];
       $item->creator = $objects[$local_id]['creator'];
       $item->image = image_style_url('ting_search_carousel', $filename);
