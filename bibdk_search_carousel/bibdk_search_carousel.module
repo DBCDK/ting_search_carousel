@@ -24,7 +24,7 @@ function bibdk_search_carousel_menu() {
 
 
 /**
- * Implements hook_menu().
+ * Implements hook_form_id_alter().
  */
 function bibdk_search_carousel_form_ting_search_carousel_admin_form_alter(&$form, &$form_state, $form_id) {
 
@@ -33,75 +33,60 @@ function bibdk_search_carousel_form_ting_search_carousel_admin_form_alter(&$form
   // Get current saved queries.
   $searches = variable_get('ting_carousel_search_queries', array());
 
-  $frequency = array(
-    '#title' => t('Frequency'),
-    '#type' => 'select',
-    '#options' => array(
-      0 => t('Static'),
-      1 => t('1 week'),
-      2 => t('2 weeks'),
-      3 => t('3 weeks'),
-      4 => t('4 weeks'),
-    ),
-    '#description' => t('Select frequency for this carousel search.'),
-  );
-
   $period = array(
-    '#title' => t('Period'),
+    '#title' => t('Period', array(), array('context' => 'bibdk_search_carousel')),
     '#type' => 'select',
     '#options' => array(
-      0 => t('All'),
-      1 => t('1 week'),
-      2 => t('2 weeks'),
-      3 => t('3 weeks'),
-      4 => t('4 weeks'),
-      5 => t('5 weeks'),
-      6 => t('6 weeks'),
-      7 => t('7 weeks'),
-      8 => t('8 weeks'),
-      9 => t('9 weeks'),
-      10 => t('10 weeks'),
-      11 => t('11 weeks'),
-      12 => t('12 weeks'),
+      0 => t('All', array(), array('context' => 'bibdk_search_carousel')),
+      1 => t('1 week', array(), array('context' => 'bibdk_search_carousel')),
+      2 => t('@n weeks', array('@n' => '2'), array('context' => 'bibdk_search_carousel')),
+      3 => t('@n weeks', array('@n' => '3'), array('context' => 'bibdk_search_carousel')),
+      4 => t('@n weeks', array('@n' => '4'), array('context' => 'bibdk_search_carousel')),
+      5 => t('@n weeks', array('@n' => '5'), array('context' => 'bibdk_search_carousel')),
+      6 => t('@n weeks', array('@n' => '6'), array('context' => 'bibdk_search_carousel')),
+      7 => t('@n weeks', array('@n' => '7'), array('context' => 'bibdk_search_carousel')),
+      8 => t('@n weeks', array('@n' => '8'), array('context' => 'bibdk_search_carousel')),
+      9 => t('@n weeks', array('@n' => '9'), array('context' => 'bibdk_search_carousel')),
+      10 => t('@n weeks', array('@n' => '10'), array('context' => 'bibdk_search_carousel')),
+      11 => t('@n weeks', array('@n' => '11'), array('context' => 'bibdk_search_carousel')),
+      12 => t('@n weeks', array('@n' => '12'), array('context' => 'bibdk_search_carousel')),
     ),
     '#default_value' => isset($item['period']) ? $item['period'] : '',
-    '#description' => t('Select Period for this carousel search.'),
+    '#description' => t('Select period for this carousel search.', array(), array('context' => 'bibdk_search_carousel')),
   );
 
   $offset = array(
-    '#title' => t('Offset'),
+    '#title' => t('Offset', array(), array('context' => 'bibdk_search_carousel')),
     '#type' => 'select',
     '#options' => array(
-      0 => t('None'),
-      1 => t('1 week'),
-      2 => t('2 weeks'),
-      3 => t('3 weeks'),
-      4 => t('4 weeks'),
-      5 => t('5 weeks'),
-      6 => t('6 weeks'),
-      7 => t('7 weeks'),
-      8 => t('8 weeks'),
-      9 => t('9 weeks'),
-      10 => t('10 weeks'),
-      11 => t('11 weeks'),
-      12 => t('12 weeks'),
+      0 => t('None', array(), array('context' => 'bibdk_search_carousel')),
+      1 => t('1 week', array(), array('context' => 'bibdk_search_carousel')),
+      2 => t('@n weeks', array('@n' => '2'), array('context' => 'bibdk_search_carousel')),
+      3 => t('@n weeks', array('@n' => '3'), array('context' => 'bibdk_search_carousel')),
+      4 => t('@n weeks', array('@n' => '4'), array('context' => 'bibdk_search_carousel')),
+      5 => t('@n weeks', array('@n' => '5'), array('context' => 'bibdk_search_carousel')),
+      6 => t('@n weeks', array('@n' => '6'), array('context' => 'bibdk_search_carousel')),
+      7 => t('@n weeks', array('@n' => '7'), array('context' => 'bibdk_search_carousel')),
+      8 => t('@n weeks', array('@n' => '8'), array('context' => 'bibdk_search_carousel')),
+      9 => t('@n weeks', array('@n' => '9'), array('context' => 'bibdk_search_carousel')),
+      10 => t('@n weeks', array('@n' => '10'), array('context' => 'bibdk_search_carousel')),
+      11 => t('@n weeks', array('@n' => '11'), array('context' => 'bibdk_search_carousel')),
+      12 => t('@n weeks', array('@n' => '12'), array('context' => 'bibdk_search_carousel')),
     ),
     '#default_value' => isset($item['offset']) ? $item['offset'] : '',
-    '#description' => t('Select offset for this carousel search.'),
+    '#description' => t('Select offset for this carousel search.', array(), array('context' => 'bibdk_search_carousel')),
   );
 
   $searches_num = sizeof($form['ting_search_carousel']['ting_searches']);
   for ($i = 0; $i < $searches_num; $i++) {
     $form['ting_search_carousel']['ting_searches']['search_' . $i]['bibdk_search_carousel'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Search settings'),
+      '#title' => t('Search settings', array(), array('context' => 'bibdk_search_carousel')),
       '#title_display' => 'invisible',
     );
-    $frequency['#default_value'] = isset($searches[$i]['frequency']) ? $searches[$i]['frequency'] : '';
     $period['#default_value']    = isset($searches[$i]['period'])    ? $searches[$i]['period']    : '';
     $offset['#default_value']    = isset($searches[$i]['offset'])    ? $searches[$i]['offset']    : '';
 
-    $form['ting_search_carousel']['ting_searches']['search_' . $i]['bibdk_search_carousel']['frequency[]']  = $frequency;
     $form['ting_search_carousel']['ting_searches']['search_' . $i]['bibdk_search_carousel']['period[]']     = $period;
     $form['ting_search_carousel']['ting_searches']['search_' . $i]['bibdk_search_carousel']['offset[]']     = $offset;
 
@@ -127,17 +112,20 @@ function bibdk_search_carousel_search_submit($form, &$form_state) {
   $searches = array();
   $search_items = array();
 
+  $hidden = variable_get('ting_carousel_search_queries_hidden', array());
+
   for ($i = 0; $i < $c; $i++) {
-    // Make an array for saving, ignoring queries w/o title.
-    if (!empty($form_state['input']['title'][$i])) {
-      $searches[] = array(
-        'title' => $form_state['input']['title'][$i],
-        'subtitle' => $form_state['input']['subtitle'][$i],
-        'query' => $form_state['input']['query'][$i],
-        'frequency' => $form_state['input']['frequency'][$i],
-        'period' => $form_state['input']['period'][$i],
-        'offset' => $form_state['input']['offset'][$i]
-      );
+    if ( !in_array($i, $hidden) ) {
+      // Make an array for saving, ignoring queries w/o title.
+      if ( !empty($form_state['input']['title'][$i]) ) {
+        $searches[] = array(
+          'title' => $form_state['input']['title'][$i],
+          'subtitle' => $form_state['input']['subtitle'][$i],
+          'query' => $form_state['input']['query'][$i],
+          'period' => $form_state['input']['period'][$i],
+          'offset' => $form_state['input']['offset'][$i]
+        );
+      }
     }
   }
 

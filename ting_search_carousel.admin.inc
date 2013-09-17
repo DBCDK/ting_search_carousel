@@ -70,7 +70,8 @@ function ting_search_carousel_admin_form($form, &$form_state) {
   $query = array();
   $hidden = variable_get('ting_carousel_search_queries_hidden', array());
 
-  if (isset($form_state['clicked_button'])) {
+  if ( isset($form_state['clicked_button']) ) {
+
     // clicked button: redirect to search result, or delete search.
     $id = explode('_', $form_state['clicked_button']['#name']);
     switch ( $id[0] ) {
@@ -89,6 +90,12 @@ function ting_search_carousel_admin_form($form, &$form_state) {
         variable_set('ting_carousel_search_queries_hidden', $hidden);
         break;
     }
+
+    // Whether add a new query field.
+    if ( $form_state['clicked_button']['#name'] == 'add_query') {
+      $searches_num++;
+    }
+
   }
 
   $form['ting_search_carousel'] = array(
@@ -103,22 +110,17 @@ function ting_search_carousel_admin_form($form, &$form_state) {
   $c = 1;
 
   // Display saved queries.
-  if (isset($searches[0]['title'])) {
+  if ( !empty($searches[0]['title']) ) {
     $c = count($searches);
     for (; $i < $c; $i++) {
       $form['ting_search_carousel']['ting_searches']['search_' . $i] = ting_search_carousel_query_form($searches[$i], $i);
     }
   }
 
-  // Whether add a new query field.
-  if ($clicked_btn == 'add_query') {
-    $searches_num++;
-  }
-
   for (; $i < $searches_num + $c; $i++) {
     $unsubmitted = array();
     // Maybe prev field had some data in it...
-    if (isset($form_state['input']['title'][$i])) {
+    if ( isset( $form_state['input']['title'][$i]) ) {
       $unsubmitted = array(
         'title' => $form_state['input']['title'][$i],
         'subtitle' => $form_state['input']['subtitle'][$i],
@@ -131,9 +133,9 @@ function ting_search_carousel_admin_form($form, &$form_state) {
 
   // Hide removed fields.
   for ($i = 0; $i < $searches_num + $c; $i++) {
-    if (in_array($i, $hidden)) {
+    if ( in_array($i, $hidden) ) {
       // Hide title, used to sort needed queries when saving
-      $form['ting_search_carousel']['ting_searches']['search_' . $i]['title[]']['#value'] = '';
+      $form['ting_search_carousel']['ting_searches']['search_' . $i]['fields']['title[]']['#value'] = '';
       $form['ting_search_carousel']['ting_searches']['search_' . $i]['#prefix'] = '<div class="search-query-hidden">';
       $form['ting_search_carousel']['ting_searches']['search_' . $i]['#suffix'] = '</div>';
     }
@@ -383,7 +385,7 @@ function ting_search_carousel_search_submit($form, &$form_state) {
 
   for ($i = 0; $i < $c; $i++) {
     // Make an array for saving, ignoring queries w/o title.
-    if (!empty($form_state['input']['title'][$i])) {
+    if ( !empty($form_state['input']['title'][$i]) ) {
       $searches[] = array(
         'title' => $form_state['input']['title'][$i],
         'subtitle' => $form_state['input']['subtitle'][$i],

@@ -260,8 +260,6 @@
 #ting-search-carousel-admin-sort .search-query-hidden {
   display: none;
 }
-#ting-search-carousel-admin-sort fieldset {
-  border-width: 0px;
-  margin: 0;
-  padding: 0;
+#ting-search-carousel-admin-sort fieldset legend {
+  display: none;
 }
