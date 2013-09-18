@@ -11,7 +11,7 @@
  */
 
 /**
- * Get fieldsets from other modules.
+ * Get query add-ons from other modules.
  *
  * @param array $query
  * @return array array

@@ -77,12 +77,13 @@ function ting_search_carousel_admin_form($form, &$form_state) {
     switch ( $id[0] ) {
       case 'test':
         $id = $id[1];
-        $q = $form_state['input']['query'][$id];
+        $queries = variable_get('ting_carousel_search_queries', array());
+        $query = module_invoke_all('ting_search_carousel_query', $queries[$id]);
         $search_info = search_get_default_module_info();
         if ( !empty($search_info['path']) && in_array($search_info['module'], variable_get('search_active_modules', array())) ) {
           $form_state['redirect'] = FALSE;
-          $url = 'search/' . $search_info['path'] . '/' . trim($q);
-          drupal_goto($url, array('query' => $query));
+          $url = 'search/' . $search_info['path'] . '/' . trim($query['query']);
+          drupal_goto($url);
         }
         break;
       case 'remove':
