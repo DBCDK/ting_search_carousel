@@ -82,6 +82,7 @@
     $('.rs-carousel .rs-carousel-runner').html(data.content);
   }
 
+
   $(document).ready(function() {
     // Get the carousel variable initialized.
     carousel_init(0);
@@ -113,4 +114,5 @@
       carousel.carousel('refresh');
     });
   });
+
 })(jQuery);
