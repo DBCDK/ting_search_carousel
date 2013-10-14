@@ -111,7 +111,9 @@
     // This is place inside document ready to ensure that the carousel have
     // been initialized.
     $(window).resize(function () {
-      carousel.carousel('refresh');
+      if ( carousel ) {
+        carousel.carousel('refresh');
+      }
     });
   });
 
