@@ -471,8 +471,14 @@
 
             var lastItem = this.elements.items.eq(this.getNoOfItems() - 1);
 
-            return lastItem.position()[this.helperStr.pos] + this._getItemDim() -
-                    this._getMaskDim() - parseInt(lastItem.css('margin-' + this.helperStr.pos2), 10);
+            var itemDim = this._getItemDim();
+            var maskDim = this._getMaskDim();
+            // var lastItemPosition = lastItem.position()[this.helperStr.pos]; // fails because of line wrap
+            var lastItemPosition = itemDim * ( this.elements.items.size() - 1);
+            var lastItemCss = parseInt(lastItem.css('margin-' + this.helperStr.pos2), 10);
+            var absoluteLastPos = lastItemPosition + itemDim - maskDim - lastItemCss;
+
+            return absoluteLastPos;
 
         },
 
