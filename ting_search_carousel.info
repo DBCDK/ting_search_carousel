@@ -3,7 +3,8 @@ description = Show Ting search results in a carousel
 package = Ding!
 version = "7.x-0.3"
 core = "7.x"
-dependencies[] = ting
-dependencies[] = ting_search
+; dependencies depends on configuration
+; dependencies[] = ting_search
+; dependencies[] = ting_openformat
 dependencies[] = ting_covers
-configure = admin/config/ting_search_carousel
+configure = admin/config/ting/ting_search_carousel
