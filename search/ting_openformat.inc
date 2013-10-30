@@ -71,8 +71,9 @@
 
     // Loop over the search results collecting basic object information.
     $local_ids = $objects = array();
+    /* @var $TingClientObjectCollection TingClientObjectCollection*/
     foreach ($result->collections as $key => $TingClientObjectCollection) {
-      $manifestations = $TingClientObjectCollection->formattedCollection->formattedCollection->manifestation;
+      $manifestations = $TingClientObjectCollection->getFormattedCollection()->getBriefDisplay()->manifestation;
       foreach ($manifestations as $manifestation) {
         $item = array();
         $id = FALSE;
