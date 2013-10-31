@@ -29,7 +29,7 @@
 
       // Try to fetch results $numResults at a time.
       $collection = NULL;
-      $collection = ting_do_search($query['query'], $page++, $numResults, array('facets' => array(), 'enrich' => TRUE, 'allObjects' => FALSE))
+      $collection = ting_do_search($query['query'], $page++, $numResults, array('facets' => array(), 'enrich' => TRUE, 'allObjects' => FALSE));
 
     }
 
