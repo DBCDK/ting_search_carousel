@@ -85,6 +85,11 @@
 
   $(document).ready(function() {
     // Get the carousel variable initialized.
+
+    if ( $('.rs-carousel').length == 0 ) {
+      return;
+    }
+
     carousel_init(0);
 
     // Add click event to tabs.
