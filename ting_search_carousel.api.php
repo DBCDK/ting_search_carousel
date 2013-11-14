@@ -18,7 +18,7 @@
  */
 function hook_ting_search_carousel_query(&$query) {
 
-  $query['query'] = $query['query'] . $query['foo']
+  $query['query'] = $query['query'] . $query['foo'];
 
 }
 
