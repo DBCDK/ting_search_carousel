@@ -46,9 +46,6 @@ while ((count($cover_items) < $max_covers) && ($start - $numResults < $max_queri
     // set Object Format
     $params['objectFormat'] = variable_get('objectFormat', 'briefDisplay');
 
-    //Set queryLanguage
-    $params['queryLanguage'] = ting_openformat_get_cql_language();
-
     if (isset($params['query']) && empty($params['query'])) {
       return array();
     }
