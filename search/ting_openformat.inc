@@ -14,14 +14,10 @@ $max_queries = variable_get('ting_search_carousel_queries_max', 400);
 
 $numResults = 40;
 $start = 1;
-
+$more = true;
 // Loop until we have $max_covers covers, or we've reached $max_queries queries.
-while ((count($cover_items) < $max_covers) && ($start - $numResults < $max_queries)) {
+while ((count($cover_items) < $max_covers) && ($start - $numResults < $max_queries) && $more) {
 
-  // If all objects in query have been fetched, stop searching
-  if ((isset($totalObjects) && $start > $totalObjects)) {
-    break;
-  }
   // If a query is defined, do a look-up else do nothing.
   if ($query) {
 
@@ -62,11 +58,10 @@ while ((count($cover_items) < $max_covers) && ($start - $numResults < $max_queri
       return array();
     }
 
-    $totalObjects =  isset($result->numTotalObjects) ? $result->numTotalObjects : 0;
-
     // static cache result - used in hook_ding_facetbrowser, ting_search etc.
     drupal_static('ting_search_results', $result);
 
+    $more = (isset($result->more)) ? $result->more : false;
   }
 
   $numTotalCollections = $result->numTotalCollections;
