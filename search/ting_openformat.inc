@@ -1,5 +1,10 @@
 <?php
 
+$phase = drupal_get_bootstrap_phase();
+// only execute code if drupal is fully bootstrapped
+if($phase != DRUPAL_BOOTSTRAP_FULL){
+  return;
+}
 // Get query based on the index parameter.
 $queries = variable_get('ting_carousel_search_queries', array());
 $query = isset($queries[$index]) ? $queries[$index] : FALSE;
