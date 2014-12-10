@@ -15,7 +15,7 @@
   <div class="rs-carousel-header">
 
     <div class="rs-carousel-header-title">
-      <h2><?php print t('LABEL_CAROUSEL_HEADER', array(), array('context' => 'ting_search_carousel')); ?></h2>
+      <?php print t('LABEL_CAROUSEL_HEADER', array(), array('context' => 'ting_search_carousel')); ?>
     </div>
 
     <?php if (count($searches) > 1): ?>
