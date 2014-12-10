@@ -90,6 +90,11 @@
       return;
     }
 
+    //return if we're on a small screen as the carousel won't get shown
+    if(!window.matchMedia(window.Foundation.media_queries.large).matches){
+      return;
+    }
+
     carousel_init(0);
 
     // Add click event to tabs.
